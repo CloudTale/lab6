@@ -1,0 +1,29 @@
+class Lab6:
+    def canFinish(self, n, pre):
+        visited = [False] * n
+        helper = [False] * n
+        al = [[] for _ in range(n)]
+
+        for t in pre:
+            al[t[1]].append(t[0])
+
+        for i in range(n):
+            if not visited[i]:
+                if self.dfs_cyclicDetection(al, i, visited, helper):
+                    return False
+        return True
+
+    def dfs_cyclicDetection(self, al, i, visited, helper):
+        visited[i] = True
+        helper[i] = True
+        neighbour = al[i]
+
+        for curr in neighbour:
+            if helper[curr]:
+                return True
+            if not visited[curr]:
+                if self.dfs_cyclicDetection(al, curr, visited, helper):
+                    return True
+
+        helper[i] = False
+        return False
